@@ -83,7 +83,7 @@
     body { font-family: 'Inter', sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
     header { background: #fff; padding: 1rem; text-align: center; font-size: 1.5rem; font-weight: bold; }
     .form-section, .card { background: #fff; margin: 1rem auto; padding: 1rem; border-radius: 10px; width: 90%; max-width: 400px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    input { width: 100%; padding: 0.5rem; margin: 0.25rem 0; border: 1px solid #ccc; border-radius: 6px; }
+    input, select { width: 100%; padding: 0.5rem; margin: 0.25rem 0; border: 1px solid #ccc; border-radius: 6px; }
     button { padding: 0.5rem 1rem; border: none; background: #111; color: #fff; border-radius: 6px; cursor: pointer; margin-top: 0.5rem; }
     button:hover { background: #333; }
     .card img { width: 100%; border-radius: 10px; }
@@ -97,8 +97,16 @@
   <div class="form-section">
     <h2>Submit Your Profile</h2>
     <input id="name" placeholder="Your Name" />
-    <input id="grade" placeholder="Your Grade" />
+    <label for="grade">Grade:</label>
+    <select id="grade">
+      <option value="">Select Grade</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+    </select>
     <input id="imageUrl" placeholder="Image URL (e.g. from Imgur)" />
+    <small><a href="https://imgur.com/upload" target="_blank">Upload image to Imgur</a> and paste the image link here</small>
     <button onclick="submitProfile()">Submit</button>
   </div>
 
