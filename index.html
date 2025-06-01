@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The People's Yearbook</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -23,10 +23,14 @@
     const db = getFirestore(app);
 
     async function submitProfile() {
-      const name = document.getElementById('name').value;
+      const name = document.getElementById('name').value.trim();
       const grade = document.getElementById('grade').value;
-      const imageUrl = document.getElementById('imageUrl').value;
-      if (!name || !grade || !imageUrl) return alert('All fields are required.');
+      const imageUrl = document.getElementById('imageUrl').value.trim();
+
+      if (!name || !grade || !imageUrl) {
+        alert('All fields are required.');
+        return;
+      }
 
       await addDoc(collection(db, 'students'), {
         name,
@@ -35,6 +39,7 @@
         quotes: [],
         createdAt: new Date()
       });
+
       alert('Profile submitted! Refresh to see it.');
     }
 
@@ -58,9 +63,9 @@
       });
     }
 
-    window.submitQuote = async function (id) {
+    async function submitQuote(id) {
       const quoteInput = document.getElementById(`quote-${id}`);
-      const quoteText = quoteInput.value;
+      const quoteText = quoteInput.value.trim();
       if (!quoteText) return;
 
       const ref = doc(db, 'students', id);
@@ -77,18 +82,65 @@
       });
     }
 
+    window.submitProfile = submitProfile;
+    window.submitQuote = submitQuote;
     window.onload = loadProfiles;
   </script>
   <style>
-    body { font-family: 'Inter', sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
-    header { background: #fff; padding: 1rem; text-align: center; font-size: 1.5rem; font-weight: bold; }
-    .form-section, .card { background: #fff; margin: 1rem auto; padding: 1rem; border-radius: 10px; width: 90%; max-width: 400px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    input, select { width: 100%; padding: 0.5rem; margin: 0.25rem 0; border: 1px solid #ccc; border-radius: 6px; }
-    button { padding: 0.5rem 1rem; border: none; background: #111; color: #fff; border-radius: 6px; cursor: pointer; margin-top: 0.5rem; }
-    button:hover { background: #333; }
-    .card img { width: 100%; border-radius: 10px; }
-    .card h3 { margin: 0.5rem 0 0.2rem; }
-    .card p { margin: 0; color: #666; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #fff;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .form-section,
+    .card {
+      background: #fff;
+      margin: 1rem auto;
+      padding: 1rem;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    input,
+    select {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.25rem 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #111;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    button:hover {
+      background: #333;
+    }
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .card h3 {
+      margin: 0.5rem 0 0.2rem;
+    }
+    .card p {
+      margin: 0;
+      color: #666;
+    }
   </style>
 </head>
 <body>
@@ -106,11 +158,10 @@
       <option value="12">12</option>
     </select>
     <input id="imageUrl" placeholder="Image URL (e.g. from Imgur)" />
-    <small><a href="https://imgur.com/upload" target="_blank">Upload image to Imgur</a> and paste the image link here</small>
+    <small><a href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer">Upload image to Imgur</a> and paste the image link here</small>
     <button onclick="submitProfile()">Submit</button>
   </div>
 
   <div id="profiles"></div>
-
 </body>
 </html>
